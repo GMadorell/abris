@@ -1,3 +1,0 @@
-10,Spain,3.5
-12,France,2.5
-14,Germany,10.5

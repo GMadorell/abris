@@ -4,7 +4,9 @@ __data_type_map = {
     "float": np.float_,
     "integer": np.float_,
     "string": "S10",
-    "text": "S10"
+    "text": "S10",
+    "boolean": bool,
+    "bool": bool
 }
 
 
