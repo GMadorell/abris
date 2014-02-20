@@ -1,0 +1,12 @@
+# Pycharm
+.idea
+.idea/*
+
+# Virtual Environment
+lib/*
+bin/*
+include/*
+local/*
+
+# Python compiled files
+*.pyc
