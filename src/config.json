@@ -1,0 +1,8 @@
+{
+    "data_model": {
+        "age": ["Integer", "Continuous"],
+        "country": ["String", "Categorical"],
+        "points_per_match": ["Float", "Continuous"]
+    },
+    "delimiter": ","
+}
