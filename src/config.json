@@ -4,5 +4,6 @@
         "country": ["String", "Categorical"],
         "points_per_match": ["Float", "Continuous"]
     },
+    "normalize": "True",
     "delimiter": ","
 }

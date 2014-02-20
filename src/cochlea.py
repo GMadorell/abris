@@ -3,23 +3,29 @@ import collections
 
 from src.file_parsing.csv_parsing import parse_csv_structured
 from src.transformations.array_transformations import structured_array_to_ndarray
-from src.transformations.text_transformations import transform_text_to_numbers_structured
+from src.transformations.text_transformations import TextToNumberStructuredTransformer
 
 
-def load_paths(data_file_path, config_file_path):
-    with open(data_file_path, "r") as data_file, \
-            open(config_file_path, "r") as config_file:
-        return load(data_file, config_file)
+class Cochlea(object):
+    def __init__(self, config_file):
+        self.__config = json.load(config_file, object_pairs_hook=collections.OrderedDict)
+        self.__text_to_number_structured_transformer = None
 
+    def fit_transform(self, data_file):
+        self.__text_to_number_structured_transformer = TextToNumberStructuredTransformer(self.__config)
 
-def load(data_file, config_file):
-    config = json.load(config_file, object_pairs_hook=collections.OrderedDict)
+        data = parse_csv_structured(data_file, self.__config)
+        data = self.__text_to_number_structured_transformer.fit_transform(data)
+        data = structured_array_to_ndarray(data)
 
-    data = parse_csv_structured(data_file, config)
-    data = transform_text_to_numbers_structured(data, config)
-    data = structured_array_to_ndarray(data)
+        return data
 
-    return data
+    def transform(self, data_file):
+        data = parse_csv_structured(data_file, self.__config)
+        data = self.__text_to_number_structured_transformer.transform(data)
+        data = structured_array_to_ndarray(data)
+
+        return data
 
 
 
