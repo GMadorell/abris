@@ -3,11 +3,12 @@ from src.translation.data_type_translation import translate_data_type
 
 
 class TextToNumberStructuredTransformer(object):
-    def __init__(self, config):
+    def __init__(self, config, verbose=True):
         """
         @param config: Loaded configuration as an ordered dictionary.
         """
         self.__config = config
+        self.__verbose = verbose
         self.__vectorizers = None
         self.__column_indices = None
 
@@ -69,5 +70,17 @@ class TextToNumberStructuredTransformer(object):
         return x.argmax(1), vectorizer
 
     def __apply_vectorizer(self, column, vectorizer):
+        if self.__verbose:
+            self.__check_column_words_inside_vocabulary(column, vectorizer)
         x = vectorizer.transform(column).toarray()
         return x.argmax(1)
+
+    def __check_column_words_inside_vocabulary(self, column, vectorizer):
+        word_set = set()
+        for word in column:
+            word_set.add(word)
+        for word in word_set:
+            if word.lower() not in vectorizer.get_feature_names():
+                print "Warning: %s not found in the vectorizer. Assigning a value of zero to it.\n" \
+                      "Vectorizer features:%s" \
+                      % (word, str(vectorizer.get_feature_names()))
