@@ -2,7 +2,8 @@
     "data_model": {
         "age": ["Integer", "Continuous"],
         "country": ["String", "Categorical"],
-        "points_per_match": ["Float", "Continuous"]
+        "points_per_match": ["Float", "Continuous"],
+        "is_awesome": ["Boolean", "Continuous"]
     },
     "normalize": "True",
     "delimiter": ","
