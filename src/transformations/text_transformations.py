@@ -1,5 +1,6 @@
 from sklearn.feature_extraction.text import CountVectorizer
-from src.translation.data_type_translation import translate_data_type
+from src.type_manipulation.translation.data_type_translation import translate_data_type
+from src.type_manipulation.type_checking import is_text_type
 
 
 class TextToNumberStructuredTransformer(object):
@@ -57,12 +58,9 @@ class TextToNumberStructuredTransformer(object):
         column_indices = []
         for i, (key, value) in enumerate(config["data_model"].items()):
             data_type = value[0]
-            if self.__is_text_type(data_type):
+            if is_text_type(data_type):
                 column_indices.append(i)
         return column_indices
-
-    def __is_text_type(self, data_type):
-        return translate_data_type(data_type) == translate_data_type("string")
 
     def __transform_text_to_numbers(self, text_array):
         vectorizer = CountVectorizer()
