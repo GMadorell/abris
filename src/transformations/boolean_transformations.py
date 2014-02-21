@@ -1,4 +1,5 @@
-from src.translation.data_type_translation import translate_data_type
+from src.type_manipulation.translation.data_type_translation import translate_data_type
+from src.type_manipulation.type_checking import is_boolean_type
 
 
 class BooleanToNumberTransformer(object):
@@ -34,9 +35,6 @@ class BooleanToNumberTransformer(object):
         column_indices = []
         for i, (key, value) in enumerate(self.__config["data_model"].items()):
             data_type = value[0]
-            if self.__is_boolean_type(data_type):
+            if is_boolean_type(data_type):
                 column_indices.append(i)
         return column_indices
-
-    def __is_boolean_type(self, data_type):
-        return translate_data_type(data_type) == translate_data_type("boolean")
