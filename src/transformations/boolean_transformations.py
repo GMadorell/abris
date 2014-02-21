@@ -33,7 +33,7 @@ class BooleanToNumberTransformer(object):
 
     def __find_boolean_columns(self):
         column_indices = []
-        for i, (key, value) in enumerate(self.__config["data_model"].items()):
+        for i, (key, value) in enumerate(self.__config.get_data_model()):
             data_type = value[0]
             if is_boolean_type(data_type):
                 column_indices.append(i)

@@ -21,7 +21,7 @@ class OneHotEncodingTransformer(object):
         @return: list containing the indices of the categorical features.
         """
         categorical_features = []
-        for i, (key, value) in enumerate(self.__config["data_model"].items()):
+        for i, (key, value) in enumerate(self.__config.get_data_model()):
             if "categorical" in map(lambda string: string.lower(), value):
                 categorical_features.append(i)
         return categorical_features
