@@ -19,7 +19,7 @@ class TextToNumberStructuredTransformer(object):
         @return: Numpy array with all the columns specified as text parsed to numbers.
         """
         self.__vectorizers = []
-        self.__column_indices = self.__find_text_column_indices(self.__config)
+        self.__column_indices = self.__find_text_column_indices()
         for column_index in self.__column_indices:
             column_name = data.dtype.names[column_index]
             column = data[column_name]
@@ -54,9 +54,9 @@ class TextToNumberStructuredTransformer(object):
 
         return data
 
-    def __find_text_column_indices(self, config):
+    def __find_text_column_indices(self):
         column_indices = []
-        for i, (key, value) in enumerate(config["data_model"].items()):
+        for i, (key, value) in enumerate(self.__config.get_data_model()):
             data_type = value[0]
             if is_text_type(data_type):
                 column_indices.append(i)

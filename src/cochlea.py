@@ -1,5 +1,6 @@
 import json
 import collections
+from src.configuration.configuration import Configuration
 
 from src.file_parsing.csv_parsing import parse_csv_structured
 from src.transformations.array_transformations import structured_array_to_ndarray
@@ -11,7 +12,7 @@ from src.transformations.text_transformations import TextToNumberStructuredTrans
 
 class Cochlea(object):
     def __init__(self, config_file):
-        self.__config = json.load(config_file, object_pairs_hook=collections.OrderedDict)
+        self.__config = Configuration(config_file)
         self.__text_to_number_structured_transformer = None
         self.__one_hot_encoding_transformer = None
 
