@@ -1,5 +1,4 @@
 from src.type_manipulation.translation.data_type_translation import translate_data_type
-from src.type_manipulation.type_checking import is_boolean_type
 
 
 class BooleanToNumberTransformer(object):
@@ -33,8 +32,7 @@ class BooleanToNumberTransformer(object):
 
     def __find_boolean_columns(self):
         column_indices = []
-        for i, (key, value) in enumerate(self.__config.get_data_model()):
-            data_type = value[0]
-            if is_boolean_type(data_type):
+        for i, feature in enumerate(self.__config.get_data_model()):
+            if feature.is_boolean():
                 column_indices.append(i)
         return column_indices

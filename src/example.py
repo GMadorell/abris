@@ -1,4 +1,5 @@
 from StringIO import StringIO
+
 from src.cochlea import Cochlea
 
 

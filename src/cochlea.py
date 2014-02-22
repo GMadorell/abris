@@ -1,5 +1,3 @@
-import json
-import collections
 from src.configuration.configuration import Configuration
 
 from src.file_parsing.csv_parsing import parse_csv_structured
@@ -9,11 +7,11 @@ from src.transformations.one_hot_encoding import OneHotEncodingTransformer
 from src.transformations.text_transformations import TextToNumberStructuredTransformer
 
 
-
 class Cochlea(object):
     def __init__(self, config_file):
         self.__config = Configuration(config_file)
         self.__text_to_number_structured_transformer = None
+        self.__boolean_to_number_transformer = None
         self.__one_hot_encoding_transformer = None
 
     def fit_transform(self, data_file):

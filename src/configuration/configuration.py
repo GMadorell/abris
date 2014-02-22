@@ -1,5 +1,6 @@
 import json
 import collections
+
 from src.configuration.data_model import DataModel
 
 
