@@ -1,6 +1,7 @@
+from sklearn.preprocessing import Normalizer
 from src.configuration.configuration import Configuration
 
-from src.file_parsing.csv_parsing import parse_csv_structured
+from src.parsing.csv_parsing import parse_csv_structured
 from src.transformations.array_transformations import structured_array_to_ndarray
 from src.transformations.boolean_transformations import BooleanToNumberTransformer
 from src.transformations.one_hot_encoding import OneHotEncodingTransformer
@@ -17,17 +18,22 @@ class Cochlea(object):
         self.__text_to_number_structured_transformer = None
         self.__boolean_to_number_transformer = None
         self.__one_hot_encoding_transformer = None
+        self.__normalizer = None
 
     def fit_transform(self, data_file):
         self.__text_to_number_structured_transformer = TextToNumberStructuredTransformer(self.__config)
         self.__boolean_to_number_transformer = BooleanToNumberTransformer(self.__config)
         self.__one_hot_encoding_transformer = OneHotEncodingTransformer(self.__config)
+        if self.__config.is_option_enabled("normalize"):
+            self.__normalizer = Normalizer(**self.__config.get_option_parameters("normalize"))
 
         data = parse_csv_structured(data_file, self.__config)
         data = self.__text_to_number_structured_transformer.fit_transform(data)
         data = self.__boolean_to_number_transformer.fit_transform(data)
         data = structured_array_to_ndarray(data)
         data = self.__one_hot_encoding_transformer.fit_transform(data)
+        if self.__config.is_option_enabled("normalize"):
+            data = self.__normalizer.fit_transform(data)
 
         return data
 
@@ -37,6 +43,8 @@ class Cochlea(object):
         data = self.__boolean_to_number_transformer.transform(data)
         data = structured_array_to_ndarray(data)
         data = self.__one_hot_encoding_transformer.transform(data)
+        if self.__config.is_option_enabled("normalize"):
+            data = self.__normalizer.transform(data)
 
         return data
 

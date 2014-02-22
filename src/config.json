@@ -5,6 +5,9 @@
         "points_per_match": ["Float", "Continuous"],
         "is_awesome": ["Boolean", "Continuous"]
     },
-    "normalize": "True",
-    "delimiter": ","
+    "normalize": {
+        "activated": "True",
+        "norm": "l1"
+    },
+    "delimiter": [","]
 }

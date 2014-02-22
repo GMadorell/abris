@@ -2,6 +2,8 @@ import json
 import collections
 
 from src.configuration.data_model import DataModel
+from src.parsing.parameter_parsing import parse_parameter
+from src.string_aliases import true_boolean_aliases
 
 
 class Configuration(object):
@@ -21,4 +23,17 @@ class Configuration(object):
         return self.__data_model
 
     def get_delimiter(self):
-        return self.__config["delimiter"]
+        return self.__config["delimiter"][0]
+
+    def is_option_enabled(self, name):
+        option_dic = self.__config.get(name, False)
+        if option_dic and option_dic["activated"] in true_boolean_aliases:
+            return True
+
+    def get_option_parameters(self, name):
+        option_dic = self.__config[name]
+        params = {}
+        for key, value in option_dic.items():
+            if key != "activated":
+                params[key] = parse_parameter(value)
+        return params
