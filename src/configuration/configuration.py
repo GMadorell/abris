@@ -23,7 +23,7 @@ class Configuration(object):
         return self.__data_model
 
     def get_delimiter(self):
-        return self.__config["delimiter"][0]
+        return self.__config["delimiter"]
 
     def is_option_enabled(self, name):
         option_dic = self.__config.get(name, False)

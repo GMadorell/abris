@@ -9,5 +9,5 @@
         "activated": "True",
         "norm": "l1"
     },
-    "delimiter": [","]
+    "delimiter": ","
 }
