@@ -16,12 +16,15 @@ class TextToNumberStructuredTransformer(object):
     def fit(self, data):
         self.__vectorizers = []
         self.__column_indices = self.__find_text_column_indices()
+        for column in self.__get_text_columns_iterator(data):
+            vectorizer = self.__construct_vectorizer(column)
+            self.__vectorizers.append(vectorizer)
+
+    def __get_text_columns_iterator(self, data):
         for column_index in self.__column_indices:
             column_name = data.dtype.names[column_index]
             column = data[column_name]
-
-            vectorizer = self.__construct_vectorizer(column)
-            self.__vectorizers.append(vectorizer)
+            yield column
 
     def fit_transform(self, data):
         """
