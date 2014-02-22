@@ -8,11 +8,11 @@ def parse_csv_structured(data_file, config):
     @return: numpy.recarray
     """
     names, dtypes = [], []
-    for key, value in config.get_data_model():
-        assert key not in names
-        data_type = value[0]
+    for feature in config.get_data_model():
+        assert feature.get_name() not in names
+        data_type = feature.get_type()
         dtypes.append(translate_data_type(data_type))
-        names.append(str(key))
+        names.append(feature.get_name())
 
     data = np.genfromtxt(data_file, delimiter=config.get_delimiter(), dtype=dtypes, names=names)
     return data
