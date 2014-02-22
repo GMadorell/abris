@@ -13,29 +13,23 @@ class TextToNumberStructuredTransformer(object):
         self.__vectorizers = None
         self.__column_indices = None
 
-    def fit_transform(self, data):
-        """
-        @param data: STRUCTURED Numpy array to be transformed.
-        @return: Numpy array with all the columns specified as text parsed to numbers.
-        """
+    def fit(self, data):
         self.__vectorizers = []
         self.__column_indices = self.__find_text_column_indices()
         for column_index in self.__column_indices:
             column_name = data.dtype.names[column_index]
             column = data[column_name]
 
-            numbers, vectorizer = self.__transform_text_to_numbers(column)
+            vectorizer = self.__construct_vectorizer(column)
             self.__vectorizers.append(vectorizer)
 
-            # Create a new description so we can change the old dtype to the new numeric type.
-            old_type = data.dtype
-            description = old_type.descr
-            description[column_index] = (description[column_index][0], translate_data_type("float"))
-
-            data[column_name] = numbers
-            data = data.astype(description)
-
-        return data
+    def fit_transform(self, data):
+        """
+        @param data: STRUCTURED Numpy array to be transformed.
+        @return: Numpy array with all the columns specified as text parsed to numbers.
+        """
+        self.fit(data)
+        return self.transform(data)
 
     def transform(self, data):
         for i, column_index in enumerate(self.__column_indices):
@@ -62,10 +56,10 @@ class TextToNumberStructuredTransformer(object):
                 column_indices.append(i)
         return column_indices
 
-    def __transform_text_to_numbers(self, text_array):
+    def __construct_vectorizer(self, text_array):
         vectorizer = CountVectorizer()
-        x = vectorizer.fit_transform(text_array).toarray()
-        return x.argmax(1), vectorizer
+        vectorizer.fit(text_array)
+        return vectorizer
 
     def __apply_vectorizer(self, column, vectorizer):
         if self.__verbose:
