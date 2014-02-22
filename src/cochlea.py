@@ -8,6 +8,10 @@ from src.transformations.text_transformations import TextToNumberStructuredTrans
 
 
 class Cochlea(object):
+    """
+    Main entry class for the whole preprocessing engine (and probably the only one that needs to be used
+    if no more features are needed).
+    """
     def __init__(self, config_file):
         self.__config = Configuration(config_file)
         self.__text_to_number_structured_transformer = None
