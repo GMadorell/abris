@@ -7,6 +7,12 @@ class DataModel(object):
         for key, value in data_model_dictionary.items():
             self.__model.append(Feature(key, value))
 
+    def has_any_text_feature(self):
+        for feature in self.__model:
+            if feature.is_text():
+                return True
+        return False
+
     def __iter__(self):
         for feature in self.__model:
             yield feature
