@@ -1,9 +1,10 @@
 
 from distutils.core import setup
+import setuptools
 
 setup(
     name = 'abris',
-    packages = ['abris_transform'],
+    packages = setuptools.find_packages(),
     version = '0.1.1',
     description = 'Small data preprocessing engine built on top of sklearn for easy prototyping.',
     author = 'Gerard Madorell',
