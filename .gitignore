@@ -10,3 +10,7 @@ local/*
 
 # Python compiled files
 *.pyc
+
+# PyPI
+*.pypirc
+.pypirc
