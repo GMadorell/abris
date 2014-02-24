@@ -5,7 +5,7 @@ import setuptools
 setup(
     name = 'abris',
     packages = setuptools.find_packages(),
-    version = '0.1.1',
+    version = '0.1.2',
     description = 'Small data preprocessing engine built on top of sklearn for easy prototyping.',
     author = 'Gerard Madorell',
     author_email = 'gmadorell@gmail.com',
