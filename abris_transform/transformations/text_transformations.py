@@ -1,5 +1,5 @@
 from sklearn.feature_extraction.text import CountVectorizer
-from abris.type_manipulation.translation.data_type_translation import translate_data_type
+from abris_transform.type_manipulation.translation.data_type_translation import translate_data_type
 
 
 class TextToNumberStructuredTransformer(object):

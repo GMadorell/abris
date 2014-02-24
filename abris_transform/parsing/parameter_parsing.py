@@ -1,5 +1,5 @@
 import unittest
-from abris import string_aliases
+from abris_transform import string_aliases
 
 
 def parse_parameter(value):
