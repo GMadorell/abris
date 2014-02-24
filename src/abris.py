@@ -8,7 +8,7 @@ from src.transformations.one_hot_encoding import OneHotEncodingTransformer
 from src.transformations.text_transformations import TextToNumberStructuredTransformer
 
 
-class Cochlea(object):
+class Abris(object):
     """
     Main entry class for the whole preprocessing engine (and probably the only one that needs to be used
     if no more features are needed).

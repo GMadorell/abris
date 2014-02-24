@@ -1,11 +1,11 @@
 from StringIO import StringIO
 
-from src.cochlea import Cochlea
+from src.abris import Abris
 
 
 def main():
     with open("config.json", "r") as config_file:
-        cochlea = Cochlea(config_file)
+        cochlea = Abris(config_file)
 
     initial_data = "10,Spain,3.5,True\n" \
                    "12,France,2.5,True\n" \
