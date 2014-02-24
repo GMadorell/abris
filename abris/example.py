@@ -1,6 +1,6 @@
 from StringIO import StringIO
 
-from src.abris import Abris
+from abris.abris import Abris
 
 
 def main():

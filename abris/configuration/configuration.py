@@ -1,9 +1,9 @@
 import json
 import collections
 
-from src.configuration.data_model import DataModel
-from src.parsing.parameter_parsing import parse_parameter
-from src.string_aliases import true_boolean_aliases
+from abris.configuration.data_model import DataModel
+from abris.parsing.parameter_parsing import parse_parameter
+from abris.string_aliases import true_boolean_aliases
 
 
 class Configuration(object):

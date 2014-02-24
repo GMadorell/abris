@@ -1,5 +1,5 @@
 from sklearn.preprocessing import OneHotEncoder
-from src.type_manipulation.translation.data_type_translation import translate_data_type
+from abris.type_manipulation.translation.data_type_translation import translate_data_type
 
 
 class OneHotEncodingTransformer(object):

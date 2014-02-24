@@ -1,11 +1,11 @@
 from sklearn.preprocessing import Normalizer
-from src.configuration.configuration import Configuration
+from abris.configuration.configuration import Configuration
 
-from src.parsing.csv_parsing import parse_csv_structured
-from src.transformations.array_transformations import structured_array_to_ndarray
-from src.transformations.boolean_transformations import BooleanToNumberTransformer
-from src.transformations.one_hot_encoding import OneHotEncodingTransformer
-from src.transformations.text_transformations import TextToNumberStructuredTransformer
+from abris.parsing.csv_parsing import parse_csv_structured
+from abris.transformations.array_transformations import structured_array_to_ndarray
+from abris.transformations.boolean_transformations import BooleanToNumberTransformer
+from abris.transformations.one_hot_encoding import OneHotEncodingTransformer
+from abris.transformations.text_transformations import TextToNumberStructuredTransformer
 
 
 class Abris(object):
