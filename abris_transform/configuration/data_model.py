@@ -11,7 +11,7 @@ class DataModel(object):
         return self.find_text_columns() is not None
 
     def has_target(self):
-        return self.__find_columns_matching(lambda feat: feat.is_target()) is not None
+        return len(self.__find_columns_matching(lambda feat: feat.is_target())) > 0
 
     def find_all_columns(self):
         return range(sum(1 for _ in self.__iter__()))
