@@ -1,8 +1,9 @@
 from sklearn.feature_extraction.text import CountVectorizer
+from abris_transform.transformations.base_transformer import BaseTransformer
 from abris_transform.type_manipulation.translation.data_type_translation import translate_data_type
 
 
-class TextToNumberStructuredTransformer(object):
+class TextToNumberStructuredTransformer(BaseTransformer):
     def __init__(self, config, verbose=True):
         """
         @param config: Loaded configuration as an ordered dictionary.
@@ -14,7 +15,7 @@ class TextToNumberStructuredTransformer(object):
 
     def fit(self, data):
         self.__vectorizers = []
-        self.__column_indices = self.__find_text_column_indices()
+        self.__column_indices = self.__config.get_data_model().find_text_columns()
         for column in self.__get_text_columns_iterator(data):
             vectorizer = self.__construct_vectorizer(column)
             self.__vectorizers.append(vectorizer)
@@ -24,14 +25,6 @@ class TextToNumberStructuredTransformer(object):
             column_name = data.dtype.names[column_index]
             column = data[column_name]
             yield column
-
-    def fit_transform(self, data):
-        """
-        @param data: STRUCTURED Numpy array to be transformed.
-        @return: Numpy array with all the columns specified as text parsed to numbers.
-        """
-        self.fit(data)
-        return self.transform(data)
 
     def transform(self, data):
         for i, column_index in enumerate(self.__column_indices):
@@ -49,13 +42,6 @@ class TextToNumberStructuredTransformer(object):
             data = data.astype(description)
 
         return data
-
-    def __find_text_column_indices(self):
-        column_indices = []
-        for i, feature in enumerate(self.__config.get_data_model()):
-            if feature.is_text():
-                column_indices.append(i)
-        return column_indices
 
     def __construct_vectorizer(self, text_array):
         vectorizer = CountVectorizer()

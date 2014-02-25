@@ -1,17 +1,14 @@
+from abris_transform.transformations.base_transformer import BaseTransformer
 from abris_transform.type_manipulation.translation.data_type_translation import translate_data_type
 
 
-class BooleanToNumberTransformer(object):
+class BooleanToNumberTransformer(BaseTransformer):
     def __init__(self, config):
         self.__config = config
         self.__boolean_columns = None
 
-    def fit_transform(self, data):
-        """
-        @param data: Structured numpy array (numpy.recarray).
-        """
-        self.__boolean_columns = self.__find_boolean_columns()
-        return self.transform(data)
+    def fit(self, data):
+        self.__boolean_columns = self.__config.get_data_model().find_boolean_columns()
 
     def transform(self, data):
         for column_index in self.__boolean_columns:
@@ -29,10 +26,3 @@ class BooleanToNumberTransformer(object):
             data = data.astype(description)
 
         return data
-
-    def __find_boolean_columns(self):
-        column_indices = []
-        for i, feature in enumerate(self.__config.get_data_model()):
-            if feature.is_boolean():
-                column_indices.append(i)
-        return column_indices
