@@ -10,7 +10,7 @@ setup(
     author = 'Gerard Madorell',
     author_email = 'gmadorell@gmail.com',
     url = 'https://github.com/Skabed/abris',
-    download_url = 'https://github.com/Skabed/abris/tarball/0.1.1',
+    download_url = 'https://github.com/Skabed/abris/tarball/0.1.2',
     keywords = ['preprocessing', 'data'],
     classifiers = [],
 )
