@@ -16,9 +16,9 @@ class TransformPipeline(object):
 
         self.__transformers.append(StructuredArrayToNdarrayTransformer())
 
-        self.__transformers.append(OneHotEncodingTransformer(config))
         if config.is_option_enabled("normalize"):
             self.__transformers.append(NormalizeTransformer(config))
+        self.__transformers.append(OneHotEncodingTransformer(config))
 
         return self
 
