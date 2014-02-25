@@ -1,7 +1,6 @@
-from sklearn.preprocessing import Normalizer
 from abris_transform.configuration.configuration import Configuration
+from abris_transform.parsing.csv_parsing import apply_csv_structured, prepare_csv_structured
 
-from abris_transform.parsing.csv_parsing import parse_csv_structured
 from abris_transform.transformations.array_transformations import structured_array_to_ndarray
 from abris_transform.transformations.boolean_transformations import BooleanToNumberTransformer
 from abris_transform.transformations.normalize import NormalizeTransformer
@@ -21,14 +20,17 @@ class Abris(object):
         self.__one_hot_encoding_transformer = None
         self.__normalizer = None
 
-    def fit_transform(self, data_file):
+    def prepare(self, data_file):
+        """
+        Called with the training data.
+        """
         self.__text_to_number_structured_transformer = TextToNumberStructuredTransformer(self.__config)
         self.__boolean_to_number_transformer = BooleanToNumberTransformer(self.__config)
         self.__one_hot_encoding_transformer = OneHotEncodingTransformer(self.__config)
         if self.__config.is_option_enabled("normalize"):
             self.__normalizer = NormalizeTransformer(self.__config)
 
-        data = parse_csv_structured(data_file, self.__config)
+        data = prepare_csv_structured(data_file, self.__config)
         data = self.__text_to_number_structured_transformer.fit_transform(data)
         data = self.__boolean_to_number_transformer.fit_transform(data)
         data = structured_array_to_ndarray(data)
@@ -36,10 +38,19 @@ class Abris(object):
             data = self.__normalizer.fit_transform(data)
         data = self.__one_hot_encoding_transformer.fit_transform(data)
 
-        return data
+        if self.__config.get_data_model().has_target():
+            return self.split_last_column(data)
+        else:
+            return data
 
-    def transform(self, data_file):
-        data = parse_csv_structured(data_file, self.__config)
+    def split_last_column(self, data):
+        return data[:, :-1], data[:, -1]
+
+    def apply(self, data_file):
+        """
+        Called with the predict data (new information).
+        """
+        data = apply_csv_structured(data_file, self.__config)
         data = self.__text_to_number_structured_transformer.transform(data)
         data = self.__boolean_to_number_transformer.transform(data)
         data = structured_array_to_ndarray(data)

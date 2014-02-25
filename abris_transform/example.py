@@ -7,16 +7,16 @@ def main():
     with open("config.json", "r") as config_file:
         cochlea = Abris(config_file)
 
-    initial_data = "10,Spain,3.5,True\n" \
-                   "12,France,2.5,True\n" \
-                   "14,Germany,10.5,False"
+    initial_data = "10,Spain,3.5,True,100\n" \
+                   "12,France,2.5,True,20\n" \
+                   "14,Germany,10.5,False,50"
 
-    data = cochlea.fit_transform(StringIO(initial_data))
+    data = cochlea.prepare(StringIO(initial_data))
     print data
 
     new_data = "10,Spain,1,True\n" \
                "10,France,20,False"
-    transformed_data = cochlea.transform(StringIO(new_data))
+    transformed_data = cochlea.apply(StringIO(new_data))
     print transformed_data
 
 

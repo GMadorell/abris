@@ -8,24 +8,33 @@ class DataModel(object):
             self.__model.append(Feature(key, value))
 
     def has_any_text_feature(self):
-        for feature in self.__model:
-            if feature.is_text():
-                return True
-        return False
+        return self.find_text_columns() is not None
+
+    def has_target(self):
+        return self.__find_columns_matching(lambda feat: feat.is_target()) is not None
 
     def find_all_columns(self):
         return range(sum(1 for _ in self.__iter__()))
 
     def find_boolean_columns(self):
-        return self.find_columns_matching(lambda feature: feature.is_type("boolean"))
+        return self.__find_columns_matching(lambda feature: feature.is_type("boolean"))
 
     def find_text_columns(self):
-        return self.find_columns_matching(lambda feature: feature.is_type("string"))
+        return self.__find_columns_matching(lambda feature: feature.is_type("string"))
 
     def find_categorical_columns(self):
-        return self.find_columns_matching(lambda feature: feature.is_categorical())
+        return self.__find_columns_matching(lambda feature: feature.is_categorical())
 
-    def find_columns_matching(self, match_function):
+    def find_target_column(self):
+        columns = self.__find_columns_matching(lambda feature: feature.is_target())
+        assert len(columns) < 2, "Can't have two targets!"
+        return columns[0]
+
+    def __find_columns_matching(self, match_function):
+        """
+        Returns a list of column indices that match the given function.
+        @match_function: Called with a single argument, a feature.
+        """
         column_indices = []
         for i, feature in enumerate(self.__iter__()):
             if match_function(feature):
@@ -52,7 +61,13 @@ class Feature(object):
         return translate_data_type(self.get_type()) == translate_data_type(type_)
 
     def is_categorical(self):
-        return "categorical" in map(lambda string: string.lower(), self.__characteristics)
+        return self.has_characteristic("categorical")
+
+    def is_target(self):
+        return self.has_characteristic("target")
+
+    def has_characteristic(self, characteristic):
+        return characteristic.lower() in map(lambda string: string.lower(), self.__characteristics)
 
 
 
