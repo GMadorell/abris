@@ -1,4 +1,5 @@
 from sklearn.feature_extraction.text import CountVectorizer
+
 from abris_transform.transformations.base_transformer import BaseTransformer
 from abris_transform.type_manipulation.translation.data_type_translation import translate_data_type
 
