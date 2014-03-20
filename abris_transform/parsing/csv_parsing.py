@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from abris_transform.type_manipulation.translation.data_type_translation import translate_data_type
 
@@ -14,8 +15,10 @@ def prepare_csv_structured(data_file, config):
         data_type = feature.get_type()
         dtypes.append(translate_data_type(data_type))
         names.append(feature.get_name())
+    #
+    # data = np.genfromtxt(data_file, delimiter=config.get_delimiter(), dtype=dtypes, names=names)
 
-    data = np.genfromtxt(data_file, delimiter=config.get_delimiter(), dtype=dtypes, names=names)
+    data = pd.read_csv(data_file, names=names)
     return data
 
 
@@ -34,7 +37,8 @@ def apply_csv_structured(data_file, config):
         dtypes.append(translate_data_type(data_type))
         names.append(feature.get_name())
 
-    data = np.genfromtxt(data_file, delimiter=config.get_delimiter(), dtype=dtypes, names=names)
+    # data = np.genfromtxt(data_file, delimiter=config.get_delimiter(), dtype=dtypes, names=names)
+    data = pd.read_csv(data_file, names=names)
     return data
 
 

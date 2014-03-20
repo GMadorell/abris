@@ -1,5 +1,9 @@
 from sklearn.feature_extraction.text import CountVectorizer
 
+import pandas as pd
+from sklearn.preprocessing import LabelBinarizer
+from sklearn_pandas import DataFrameMapper
+
 from abris_transform.transformations.base_transformer import BaseTransformer
 from abris_transform.type_manipulation.translation.data_type_translation import translate_data_type
 
@@ -13,34 +17,35 @@ class TextToNumberStructuredTransformer(BaseTransformer):
         self.__verbose = verbose
         self.__vectorizers = None
         self.__column_indices = None
+        self.mapper = None
 
     def fit(self, data):
         self.__vectorizers = []
-        self.__column_indices = self.__config.get_data_model().find_text_columns()
-        for column in self.__get_text_columns_iterator(data):
-            vectorizer = self.__construct_vectorizer(column)
-            self.__vectorizers.append(vectorizer)
 
-    def __get_text_columns_iterator(self, data):
-        for column_index in self.__column_indices:
-            column_name = data.dtype.names[column_index]
-            column = data[column_name]
-            yield column
+        mapping = []
+
+        for feature in self.__config.get_data_model().find_text_features():
+            name = feature.get_name()
+            mapping.append((name, LabelBinarizer()))
+
+        self.mapper = DataFrameMapper(mapping)
+        self.mapper.fit(data)
 
     def transform(self, data):
-        for i, column_index in enumerate(self.__column_indices):
-            column_name = data.dtype.names[column_index]
-            column = data[column_name]
-
-            numbers = self.__apply_vectorizer(column, self.__vectorizers[i])
-
-            # Create a new description so we can change the old dtype to the new numeric type.
-            old_type = data.dtype
-            description = old_type.descr
-            description[column_index] = (description[column_index][0], translate_data_type("float"))
-
-            data[column_name] = numbers
-            data = data.astype(description)
+        # for i, column_index in enumerate(self.__column_indices):
+        #     column_name = data.dtype.names[column_index]
+        #     column = data[column_name]
+        #
+        #     numbers = self.__apply_vectorizer(column, self.__vectorizers[i])
+        #
+        #     # Create a new description so we can change the old dtype to the new numeric type.
+        #     old_type = data.dtype
+        #     description = old_type.descr
+        #     description[column_index] = (description[column_index][0], translate_data_type("float"))
+        #
+        #     data[column_name] = numbers
+        #     data = data.astype(description)
+        data = self.mapper.transform(data)
 
         return data
 

@@ -8,29 +8,46 @@ class DataModel(object):
             self.__model.append(Feature(key, value))
 
     def has_any_text_feature(self):
-        return self.find_text_columns() is not None
+        return self.find_text_columns_indices() is not None
 
     def has_target(self):
-        return len(self.__find_columns_matching(lambda feat: feat.is_target())) > 0
+        return len(self.__find_columns_indices_matching(lambda feat: feat.is_target())) > 0
 
     def find_all_columns(self):
         return range(sum(1 for _ in self.__iter__()))
 
-    def find_boolean_columns(self):
-        return self.__find_columns_matching(lambda feature: feature.is_type("boolean"))
+    def find_all_features(self):
+        return [feature for feature in self.__iter__()]
 
-    def find_text_columns(self):
-        return self.__find_columns_matching(lambda feature: feature.is_type("string"))
+    def find_boolean_columns_indices(self):
+        return self.__find_columns_indices_matching(lambda feature: feature.is_type("boolean"))
 
-    def find_categorical_columns(self):
-        return self.__find_columns_matching(lambda feature: feature.is_categorical())
+    def find_boolean_features(self):
+        return self.__find_features_matching(lambda feature: feature.is_type("boolean"))
 
-    def find_target_column(self):
-        columns = self.__find_columns_matching(lambda feature: feature.is_target())
+    def find_text_columns_indices(self):
+        return self.__find_columns_indices_matching(lambda feature: feature.is_type("string"))
+
+    def find_text_features(self):
+        return self.__find_features_matching(lambda feature: feature.is_type("string"))
+
+    def find_categorical_columns_indices(self):
+        return self.__find_columns_indices_matching(lambda feature: feature.is_categorical())
+
+    def find_categorical_features(self):
+        return self.__find_features_matching(lambda feature: feature.is_categorical())
+
+    def find_target_column_index(self):
+        columns = self.__find_columns_indices_matching(lambda feature: feature.is_target())
         assert len(columns) < 2, "Can't have two targets!"
         return columns[0]
 
-    def __find_columns_matching(self, match_function):
+    def find_target_feature(self):
+        features = self.__find_features_matching(lambda feature: feature.is_target())
+        assert len(features) < 2, "Can't have two targets!"
+        return features[0]
+
+    def __find_columns_indices_matching(self, match_function):
         """
         Returns a list of column indices that match the given function.
         @match_function: Called with a single argument, a feature.
@@ -40,6 +57,13 @@ class DataModel(object):
             if match_function(feature):
                 column_indices.append(i)
         return column_indices
+
+    def __find_features_matching(self, match_function):
+        features = []
+        for feature in self.__iter__():
+            if match_function(feature):
+                features.append(feature)
+        return features
 
     def __iter__(self):
         for feature in self.__model:

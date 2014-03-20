@@ -11,10 +11,10 @@ class NormalizeTransformer(BaseTransformer):
 
     def fit(self, data):
         model = self.__config.get_data_model()
-        self.__columns_to_normalize = set(model.find_all_columns()) - set(model.find_text_columns()) \
-                                      - set(model.find_boolean_columns())
+        self.__columns_to_normalize = set(model.find_all_columns()) - set(model.find_text_columns_indices()) \
+                                      - set(model.find_boolean_columns_indices())
         if model.has_target():
-            self.__columns_to_normalize -= {model.find_target_column()}
+            self.__columns_to_normalize -= {model.find_target_column_index()}
 
         self.__normalize_info = {}
         for column_index in self.__columns_to_normalize:

@@ -10,7 +10,7 @@ class OneHotEncodingTransformer(BaseTransformer):
         self.__encoder = None
 
     def fit(self, data):
-        categorical_features = self.__config.get_data_model().find_categorical_columns()
+        categorical_features = self.__config.get_data_model().find_categorical_columns_indices()
         self.__encoder = OneHotEncoder(categorical_features=categorical_features, dtype=translate_data_type("float"))
         self.__encoder.fit(data)
 
