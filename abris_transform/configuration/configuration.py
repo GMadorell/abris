@@ -22,9 +22,6 @@ class Configuration(object):
     def get_data_model(self):
         return self.__data_model
 
-    def get_delimiter(self):
-        return self.__config["delimiter"]
-
     def is_option_enabled(self, name):
         option_dic = self.__config.get(name, False)
         if option_dic and option_dic["enabled"] in true_boolean_aliases:

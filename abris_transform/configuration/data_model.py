@@ -1,4 +1,5 @@
-from abris_transform.type_manipulation.translation.data_type_translation import translate_data_type
+from abris_transform.type_manipulation.translation.data_type_translation import type_name_to_data_type, \
+    data_type_to_type_name
 
 
 class DataModel(object):
@@ -6,57 +7,45 @@ class DataModel(object):
         self.__model = []
         for key, value in data_model_dictionary.items():
             self.__model.append(Feature(key, value))
+        self.__feature_types_set = False
+
+    def set_features_types_from_dataframe(self, data_frame):
+        """
+        Sets the features types from the given data_frame.
+        All the calls except the first one are ignored.
+        """
+        if self.__feature_types_set:
+            return
+        self.__feature_types_set = True
+
+        dtypes = data_frame.dtypes
+        for feature in self.__iter__():
+            name = feature.get_name()
+            type_name = data_type_to_type_name(dtypes[name])
+            feature.set_type_name(type_name)
 
     def has_any_text_feature(self):
-        return self.find_text_columns_indices() is not None
+        return self.find_text_features() is not None
 
     def has_target(self):
-        return len(self.__find_columns_indices_matching(lambda feat: feat.is_target())) > 0
-
-    def find_all_columns(self):
-        return range(sum(1 for _ in self.__iter__()))
+        return len(self.__find_features_matching(lambda feat: feat.is_target())) > 0
 
     def find_all_features(self):
         return [feature for feature in self.__iter__()]
 
-    def find_boolean_columns_indices(self):
-        return self.__find_columns_indices_matching(lambda feature: feature.is_type("boolean"))
-
     def find_boolean_features(self):
-        return self.__find_features_matching(lambda feature: feature.is_type("boolean"))
-
-    def find_text_columns_indices(self):
-        return self.__find_columns_indices_matching(lambda feature: feature.is_type("string"))
+        return self.__find_features_matching(lambda feature: feature.is_type_name("boolean"))
 
     def find_text_features(self):
-        return self.__find_features_matching(lambda feature: feature.is_type("string"))
-
-    def find_categorical_columns_indices(self):
-        return self.__find_columns_indices_matching(lambda feature: feature.is_categorical())
+        return self.__find_features_matching(lambda feature: feature.is_type_name("string"))
 
     def find_categorical_features(self):
         return self.__find_features_matching(lambda feature: feature.is_categorical())
-
-    def find_target_column_index(self):
-        columns = self.__find_columns_indices_matching(lambda feature: feature.is_target())
-        assert len(columns) < 2, "Can't have two targets!"
-        return columns[0]
 
     def find_target_feature(self):
         features = self.__find_features_matching(lambda feature: feature.is_target())
         assert len(features) < 2, "Can't have two targets!"
         return features[0]
-
-    def __find_columns_indices_matching(self, match_function):
-        """
-        Returns a list of column indices that match the given function.
-        @match_function: Called with a single argument, a feature.
-        """
-        column_indices = []
-        for i, feature in enumerate(self.__iter__()):
-            if match_function(feature):
-                column_indices.append(i)
-        return column_indices
 
     def __find_features_matching(self, match_function):
         features = []
@@ -74,15 +63,20 @@ class Feature(object):
     def __init__(self, name, characteristics_list):
         self.__name = str(name)
         self.__characteristics = characteristics_list
+        self.__type_name = None
 
     def get_name(self):
         return self.__name
 
-    def get_type(self):
-        return self.__characteristics[0]
+    def get_type_name(self):
+        assert self.__type_name is not None
+        return self.__type_name
 
-    def is_type(self, type_):
-        return translate_data_type(self.get_type()) == translate_data_type(type_)
+    def set_type_name(self, type_name):
+        self.__type_name = type_name
+
+    def is_type_name(self, type_name):
+        return type_name_to_data_type(self.get_type_name()) == type_name_to_data_type(type_name)
 
     def is_categorical(self):
         return self.has_characteristic("categorical")

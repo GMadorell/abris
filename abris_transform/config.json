@@ -1,10 +1,10 @@
 {
     "data_model": {
-        "age": ["Integer", "Continuous"],
-        "country": ["String", "Categorical"],
-        "points_per_match": ["Float", "Continuous"],
-        "is_awesome": ["Boolean", "Continuous"],
-        "paid_price": ["Float", "Continuous", "Target"]
+        "age": ["Continuous"],
+        "country": ["Categorical"],
+        "points_per_match": ["Continuous"],
+        "is_awesome": ["Boolean"],
+        "paid_price": ["Continuous", "Target"]
     },
     "scaling": {
         "enabled": "True"
