@@ -7,6 +7,9 @@ def parse_parameter(value):
     """
     @return: The best approximation of a type of the given value.
     """
+    if any((isinstance(value, float), isinstance(value, int), isinstance(value, bool))):
+        return value
+
     try:
         return int(value)
     except ValueError:

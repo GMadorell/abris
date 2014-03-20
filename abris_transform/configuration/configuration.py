@@ -27,6 +27,10 @@ class Configuration(object):
         if option_dic and option_dic["enabled"] in true_boolean_aliases:
             return True
 
+    def get_option_parameter(self, option_name, parameter_name):
+        parameters = self.get_option_parameters(option_name)
+        return parameters[parameter_name]
+
     def get_option_parameters(self, name):
         option_dic = self.__config[name]
         params = {}

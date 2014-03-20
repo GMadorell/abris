@@ -8,5 +8,9 @@
     },
     "scaling": {
         "enabled": "True"
+    },
+    "split": {
+        "enabled": "True",
+        "train_percentage": 0.7
     }
 }

@@ -1,4 +1,4 @@
-from sklearn.preprocessing import StandardScaler, LabelBinarizer
+from sklearn.preprocessing import StandardScaler, LabelBinarizer, Binarizer
 
 from abris_transform.transformations.null_transformer import NullTransformer
 
@@ -14,8 +14,9 @@ def get_dummy_variables_mapping(config):
 def get_normalize_variables_mapping(config):
     model = config.get_data_model()
     mapping = []
-    features_to_normalize = set(model.find_all_features()) - set(model.find_text_features()) \
-                            - set(model.find_boolean_features()) - set(model.find_categorical_features())
+    features_to_normalize = set(model.find_all_features()) \
+                            - set(model.find_boolean_features()) \
+                            - set(model.find_categorical_features())
     if model.has_target():
         features_to_normalize -= {model.find_target_feature()}
 
@@ -34,7 +35,7 @@ def get_boolean_features_mapping(config):
     model = config.get_data_model()
     mapping = []
     for feature in model.find_boolean_features():
-        mapping.append((feature.get_name(), NullTransformer()))
+        mapping.append((feature.get_name(), Binarizer()))
     return mapping
 
 
