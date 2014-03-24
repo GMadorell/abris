@@ -20,10 +20,10 @@ def main():
                    "12,France,2.5,True,20\n" \
                    "12,France,2.5,True,20\n"
 
-    X, y = abris.prepare(StringIO(initial_data))
-    pprint(X)
+    train, test = abris.prepare(StringIO(initial_data))
+    pprint(train)
     print "---"
-    pprint(y)
+    pprint(test)
     print "---"
 
     new_data = "10,Spain,1,True\n" \

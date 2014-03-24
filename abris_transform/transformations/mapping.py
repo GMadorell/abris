@@ -1,6 +1,6 @@
 from sklearn.preprocessing import StandardScaler, LabelBinarizer, Binarizer
 
-from abris_transform.transformations.null_transformer import NullTransformer
+from abris_transform.transformations.as_numpy_array_transformer import AsNumpyArrayTransformer
 
 
 def get_dummy_variables_mapping(config):
@@ -23,7 +23,7 @@ def get_normalize_variables_mapping(config):
     if config.is_option_enabled("scaling"):
         transform_class = StandardScaler
     else:
-        transform_class = NullTransformer
+        transform_class = AsNumpyArrayTransformer
 
     for feature in features_to_normalize:
         name = feature.get_name()
