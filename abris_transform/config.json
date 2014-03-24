@@ -6,6 +6,10 @@
         "is_awesome": ["Boolean"],
         "paid_price": ["Continuous", "Target"]
     },
+    "nan_treatment": {
+        "enabled": "True",
+        "method": "drop_rows"
+    },
     "scaling": {
         "enabled": "True"
     },
