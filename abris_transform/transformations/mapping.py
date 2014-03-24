@@ -5,7 +5,12 @@ from abris_transform.transformations.as_numpy_array_transformer import AsNumpyAr
 
 def get_dummy_variables_mapping(config):
     mapping = []
-    for feature in config.get_data_model().find_categorical_features():
+
+    data_model = config.get_data_model()
+    features = set(data_model.find_categorical_features())
+    features -= set(data_model.find_ignored_features())
+
+    for feature in features:
         name = feature.get_name()
         mapping.append((name, LabelBinarizer()))
     return mapping
@@ -16,7 +21,8 @@ def get_normalize_variables_mapping(config):
     mapping = []
     features_to_normalize = set(model.find_all_features()) \
                             - set(model.find_boolean_features()) \
-                            - set(model.find_categorical_features())
+                            - set(model.find_categorical_features()) \
+                            - set(model.find_ignored_features())
     if model.has_target():
         features_to_normalize -= {model.find_target_feature()}
 
@@ -32,9 +38,13 @@ def get_normalize_variables_mapping(config):
 
 
 def get_boolean_features_mapping(config):
-    model = config.get_data_model()
     mapping = []
-    for feature in model.find_boolean_features():
+    model = config.get_data_model()
+
+    features = set(model.find_boolean_features())
+    features -= set(model.find_ignored_features())
+
+    for feature in features:
         mapping.append((feature.get_name(), Binarizer()))
     return mapping
 

@@ -6,14 +6,25 @@ import numpy as np
 
 
 class Transformer(object):
+    """
+    The purpose of this class is to take a dataframe and transform it into
+    a numpy array compatible format.
+    """
+
     def __init__(self, config):
         self.__config = config
-        mapping = DataFrameMapCreator().get_mapping_from_config(config)
-        self.__mapper = DataFrameMapper(mapping)
+        self.__mapper = None
 
     def prepare(self, dataframe):
+        """
+        Takes the already cleaned dataframe, splits it into train and test
+        and returns the train and test as numpy arrays.
+        If the problem is supervised, the target column will be that last one
+        of the returned arrays.
+        """
+        mapping = DataFrameMapCreator().get_mapping_from_config(self.__config)
+        self.__mapper = DataFrameMapper(mapping)
         train, test = split_dataframe_train_test(dataframe, self.__config.get_option_parameter("split", "train_percentage"))
-
         return self.__get_correct_return_parameters(train, test)
 
     def __get_correct_return_parameters(self, train, test):

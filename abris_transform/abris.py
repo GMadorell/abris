@@ -1,13 +1,7 @@
-from sklearn_pandas import DataFrameMapper
-from abris_transform.dataframe_manipulation.split_dataframe import split_dataframe_train_test
-
 from abris_transform.parsing.csv_parsing import prepare_csv_to_dataframe
-from abris_transform.transformations.mapping import DataFrameMapCreator
 from abris_transform.configuration.configuration import Configuration
+from abris_transform.transformations.cleaner import Cleaner
 from abris_transform.transformations.transformer import Transformer
-from abris_transform.type_manipulation.translation.data_type_translation import type_name_to_data_type
-
-import numpy as np
 
 
 class Abris(object):
@@ -21,14 +15,15 @@ class Abris(object):
         @param config_file: File like object containing the configuration.
         """
         self.__config = Configuration(config_file)
-        self.__transformer = None
+        self.__transformer = Transformer(self.__config)
+        self.__cleaner = Cleaner(self.__config)
 
     def prepare(self, data_file):
         """
         Called with the training data.
         """
         data = prepare_csv_to_dataframe(data_file, self.__config)
-        self.__transformer = Transformer(self.__config)
+        data = self.__cleaner.prepare(data)
         return self.__transformer.prepare(data)
 
     def apply(self, data_file):
@@ -36,6 +31,7 @@ class Abris(object):
         Called with the predict data (new information).
         """
         data = prepare_csv_to_dataframe(data_file, self.__config, use_target=False)
+        data = self.__cleaner.apply(data)
         data = self.__transformer.apply(data)
         return data
 

@@ -10,7 +10,7 @@ def main():
         abris = Abris(config_file)
 
     initial_data = "10,Spain,3.5,True,100\n" \
-                   "12,France,2.5,True,20\n" \
+                   "12,France,,True,20\n" \
                    "14,Germany,10.5,False,50\n" \
                    "12,France,2.5,True,20\n" \
                    "12,France,2.5,True,20\n" \

@@ -42,6 +42,9 @@ class DataModel(object):
     def find_categorical_features(self):
         return self.__find_features_matching(lambda feature: feature.is_categorical())
 
+    def find_ignored_features(self):
+        return self.__find_features_matching(lambda feature: feature.has_characteristic("ignore"))
+
     def find_target_feature(self):
         features = self.__find_features_matching(lambda feature: feature.is_target())
         assert len(features) < 2, "Can't have two targets!"
