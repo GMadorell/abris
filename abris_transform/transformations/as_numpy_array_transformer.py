@@ -1,5 +1,6 @@
-from abris_transform.transformations.base_transformer import BaseTransformer
 import numpy as np
+
+from abris_transform.transformations.base_transformer import BaseTransformer
 
 
 class AsNumpyArrayTransformer(BaseTransformer):

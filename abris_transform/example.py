@@ -4,7 +4,6 @@ from pprint import pprint
 from abris_transform.abris import Abris
 
 
-
 def main():
     with open("config.json", "r") as config_file:
         abris = Abris(config_file)
