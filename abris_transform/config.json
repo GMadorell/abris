@@ -4,7 +4,7 @@
         "country": ["Categorical"],
         "points_per_match": ["Continuous"],
         "is_awesome": ["Boolean"],
-        "paid_price": ["Continuous", "Target"]
+        "paid_price": ["Categorical", "Target"]
     },
     "nan_treatment": {
         "enabled": "True",

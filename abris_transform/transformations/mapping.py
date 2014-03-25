@@ -9,6 +9,8 @@ def get_dummy_variables_mapping(config):
     data_model = config.get_data_model()
     features = set(data_model.find_categorical_features())
     features -= set(data_model.find_ignored_features())
+    if data_model.has_target():
+        features -= {data_model.find_target_feature()}
 
     for feature in features:
         name = feature.get_name()

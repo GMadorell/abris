@@ -27,6 +27,7 @@ class Cleaner(object):
                 dataframe = dataframe.fillna(dataframe.mean())
             elif method == "drop_rows":
                 dataframe = dataframe.dropna(axis=0)
+                dataframe = dataframe.reset_index(drop=True)
             else:
                 raise ValueError("Method not understood: %s" % method)
         return dataframe
