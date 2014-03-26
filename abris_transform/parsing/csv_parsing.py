@@ -17,8 +17,6 @@ def prepare_csv_to_dataframe(data_file, config, use_target=True):
 
     transform_categorical_features(config, data, use_target)
 
-    model.set_features_types_from_dataframe(data)
-
     return data
 
 
