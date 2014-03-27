@@ -12,7 +12,7 @@ def main():
                    "12,France,,True,20\n" \
                    "14,Germany,10.5,False,50\n" \
                    "12,France,2.5,True,20\n" \
-                   "12,France,2.5,True,20\n" \
+                   "12,,2.5,True,20\n" \
                    "12,France,2.5,True,20\n" \
                    "12,France,2.5,True,20\n" \
                    "12,France,2.5,True,20\n" \

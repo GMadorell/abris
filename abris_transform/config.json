@@ -1,14 +1,14 @@
 {
     "data_model": {
-        "age": ["Continuous"],
+        "age": ["Numeric"],
         "country": ["Categorical"],
-        "points_per_match": ["Continuous"],
+        "points_per_match": ["Numeric"],
         "is_awesome": ["Boolean"],
-        "paid_price": ["Categorical", "Target"]
+        "paid_price": ["Numeric", "Target"]
     },
     "nan_treatment": {
         "enabled": "True",
-        "method": "drop_rows"
+        "method": "mean"
     },
     "scaling": {
         "enabled": "True"

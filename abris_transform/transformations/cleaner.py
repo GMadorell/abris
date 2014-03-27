@@ -25,11 +25,21 @@ class Cleaner(object):
             method = self.__config.get_option_parameter("nan_treatment", "method")
             if method == "mean":
                 dataframe = dataframe.fillna(dataframe.mean())
+                dataframe = dataframe.fillna(dataframe.mode())
+            elif method == "median":
+                dataframe = dataframe.fillna(dataframe.median())
+                dataframe = dataframe.fillna(dataframe.mode())
+            elif method == "mode":
+                dataframe = dataframe.fillna(dataframe.mode())
             elif method == "drop_rows":
-                dataframe = dataframe.dropna(axis=0)
-                dataframe = dataframe.reset_index(drop=True)
+                dataframe = self.__drop_rows(dataframe)
             else:
                 raise ValueError("Method not understood: %s" % method)
+        return dataframe
+
+    def __drop_rows(self, dataframe):
+        dataframe = dataframe.dropna(axis=0)
+        dataframe = dataframe.reset_index(drop=True)
         return dataframe
 
 
