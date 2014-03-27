@@ -6,12 +6,20 @@ class Cleaner(object):
         self.__model = config.get_data_model()
 
     def prepare(self, dataframe):
+        dataframe = self.__trim_text_features(dataframe)
         dataframe = self.__drop_ignored_features(dataframe)
         dataframe = self.__apply_nan_treatment(dataframe)
         return dataframe
 
     def apply(self, dataframe):
         return self.prepare(dataframe)
+
+    def __trim_text_features(self, dataframe):
+        text_features = self.__model.find_text_features()
+        text_feature_names = map(lambda feature: feature.get_name(), text_features)
+        for name in text_feature_names:
+            dataframe[name] = dataframe[name].str.strip()
+        return dataframe
 
     def __drop_ignored_features(self, dataframe):
         names = self.__extract_feature_names(self.__model.find_ignored_features())
