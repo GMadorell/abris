@@ -2,7 +2,7 @@ from unittest import TestCase
 from abris_transform.configuration.feature import Feature
 
 
-class FeatureTests(TestCase):
+class FeatureTest(TestCase):
 
     def setUp(self):
         self.f = Feature("feature", [])
@@ -52,5 +52,9 @@ class FeatureTests(TestCase):
         f = Feature("some feature", ["chaRactErisTic"])
         self.assertTrue(f.has_characteristic("characteristic"))
         self.assertTrue(f.has_characteristic("chaRactEristiC"))
+
+    def test_representation(self):
+        f = Feature("name", [])
+        self.assertEqual(f.__repr__(), "Feature{Name=name}")
 
 

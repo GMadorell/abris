@@ -25,7 +25,7 @@ class DataModel(object):
             feature.set_type_name(type_name)
 
     def has_any_text_feature(self):
-        return self.find_text_features() is not None
+        return self.find_text_features() is True
 
     def has_target(self):
         return len(self.__find_features_matching(lambda feat: feat.is_target())) > 0
@@ -48,6 +48,7 @@ class DataModel(object):
     def find_target_feature(self):
         features = self.__find_features_matching(lambda feature: feature.is_target())
         assert len(features) < 2, "Can't have two targets!"
+        assert len(features) > 0, "This data model doesn't have any target feature"
         return features[0]
 
     def __find_features_matching(self, match_function):
