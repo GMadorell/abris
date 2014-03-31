@@ -1,4 +1,5 @@
 from abris_transform.configuration.feature import Feature
+from abris_transform.decorators.run_once import run_once
 from abris_transform.type_manipulation.translation.data_type_translation import data_type_to_type_name
 
 
@@ -7,17 +8,13 @@ class DataModel(object):
         self.__model = []
         for key, value in data_model_dictionary.items():
             self.__model.append(Feature(key, value))
-        self.__feature_types_set = False
 
+    @run_once
     def set_features_types_from_dataframe(self, data_frame):
         """
         Sets the features types from the given data_frame.
         All the calls except the first one are ignored.
         """
-        if self.__feature_types_set:
-            return
-        self.__feature_types_set = True
-
         dtypes = data_frame.dtypes
         for feature in self.__iter__():
             name = feature.get_name()
