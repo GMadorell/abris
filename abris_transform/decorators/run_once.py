@@ -1,12 +1,41 @@
+def method_once(method):
+    """
+    A decorator that runs a method only once.
+    """
+    attribute_name = "_%s_once_result" % id(method)
 
-def run_once(function):
+    def decorated(self, *args, **kwargs):
+        try:
+            return getattr(self, attribute_name)
+        except AttributeError:
+            setattr(self, attribute_name, method(self, *args, **kwargs))
+            return getattr(self, attribute_name)
+
+    return decorated
+
+
+def func_once(func):
     """
-    Decorator that will make the decorated function execute and return once and on
-    all the next executions simply return None without executing it.
+    A decorator that runs a function only once."
     """
-    def wrapper(*args, **kwargs):
-        if not wrapper.has_run:
-            wrapper.has_run = True
-            return function(*args, **kwargs)
-    wrapper.has_run = False
-    return wrapper
+
+    def decorated(*args, **kwargs):
+        try:
+            return decorated._once_result
+        except AttributeError:
+            decorated._once_result = func(*args, **kwargs)
+            return decorated._once_result
+
+    return decorated
+
+
+# class RunOnce(object):
+#     def __init__(self, func):
+#         self.__func = func
+#         self.__called = False
+#
+#     def __call__(self, *args, **kwargs):
+#         if not self.__called:
+#             self.__called = True
+#             return self.__func(*args, **kwargs)
+
