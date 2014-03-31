@@ -1,4 +1,5 @@
 from sklearn.preprocessing import StandardScaler, LabelBinarizer, Binarizer
+from sklearn_pandas import DataFrameMapper
 
 from abris_transform.transformations.as_numpy_array_transformer import AsNumpyArrayTransformer
 
@@ -54,6 +55,9 @@ def get_boolean_features_mapping(config):
 class DataFrameMapCreator(object):
     def __init__(self):
         pass
+
+    def get_mapper_from_config(self, config):
+        return DataFrameMapper(self.get_mapping_from_config(config))
 
     def get_mapping_from_config(self, config):
         mapping = []

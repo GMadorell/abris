@@ -1,11 +1,10 @@
-from sklearn_pandas import DataFrameMapper
 import numpy as np
 
 from abris_transform.dataframe_manipulation.split_dataframe import split_dataframe_train_test
-
 from abris_transform.transformations.label_encoder_missing_values_transformer import \
     LabelEncoderMissingValuesTransformer
 from abris_transform.transformations.mapping import DataFrameMapCreator
+from abris_transform.transformations.transformation_pipeline import TransformationPipeline
 from abris_transform.transformations.transformer_adapter import TransformerAdapter
 from abris_transform.type_manipulation.translation.data_type_translation import type_name_to_data_type
 
@@ -18,7 +17,7 @@ class Transformer(object):
 
     def __init__(self, config):
         self.__config = config
-        self.__mapper = None
+        self.__pipeline = TransformationPipeline()
         self.__label_encoder_adapter = TransformerAdapter(LabelEncoderMissingValuesTransformer())
 
     def prepare(self, dataframe):
@@ -28,16 +27,18 @@ class Transformer(object):
         If the problem is supervised, the target column will be that last one
         of the returned arrays.
         """
-        mapping = DataFrameMapCreator().get_mapping_from_config(self.__config)
-        self.__mapper = DataFrameMapper(mapping)
-        train, test = split_dataframe_train_test(dataframe, self.__config.get_option_parameter("split", "train_percentage"))
-        return self.__get_correct_return_parameters(train, test)
+        self.__pipeline.add_transformer(DataFrameMapCreator().get_mapper_from_config(self.__config))
 
-    def __get_correct_return_parameters(self, train, test):
+        return self.__get_correct_return_parameters(dataframe)
+
+    def __get_correct_return_parameters(self, dataframe):
         model = self.__config.get_data_model()
 
-        train_transformed = self.__mapper.fit_transform(train)
-        test_transformed = self.__mapper.transform(test)
+        train, test = split_dataframe_train_test(dataframe,
+                                                 self.__config.get_option_parameter("split", "train_percentage"))
+
+        train_transformed = self.__pipeline.fit_transform(train)
+        test_transformed = self.__pipeline.transform(test)
 
         if model.has_target():
             return self.__add_target_data(train_transformed, train), \
@@ -66,4 +67,4 @@ class Transformer(object):
         return np.hstack((transformed_data, target))
 
     def apply(self, dataframe):
-        return self.__mapper.transform(dataframe)
+        return self.__pipeline.transform(dataframe)
