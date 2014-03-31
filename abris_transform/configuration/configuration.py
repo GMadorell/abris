@@ -30,13 +30,20 @@ class Configuration(object):
             return False
 
     def get_option_parameter(self, option_name, parameter_name):
+        """
+        Note that the "enabled" configuration part is not considered a parameter.
+        """
         parameters = self.get_option_parameters(option_name)
         return parameters[parameter_name]
 
     def get_option_parameters(self, name):
+        """
+        Returns all the parameters of the given option.
+        Note that the "enabled" configuration part is not considered a parameter.
+        """
         option_dic = self.__config[name]
         params = {}
         for key, value in option_dic.items():
-            if key != "activated":
+            if key != "enabled":
                 params[key] = parse_parameter(value)
         return params
