@@ -14,6 +14,9 @@ class Feature(object):
         assert self.__type_name is not None
         return self.__type_name
 
+    def get_characteristics(self):
+        return self.__characteristics
+
     def set_type_name(self, type_name):
         self.__type_name = type_name
 

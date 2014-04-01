@@ -12,7 +12,6 @@ class DataModelWrapper(object):
         self.data_model = None
 
         self.clean()
-        self.rebuild()
 
     def clean(self):
         self.__model_dict = {}
@@ -38,6 +37,9 @@ class DataModelWrapper(object):
 
     def add_categorical_text_feature(self, number=1):
         self.__add(number, "categorical_text_feature", ["Categorical"], ["Hi", "Hello"])
+
+    def add_custom_text_feature(self, values, number=1):
+        self.__add(number, "custom_text_feature", ["Categorical"], values)
 
     def add_numerical_target(self, number=1):
         self.__add(number, "numerical_target", ["Numerical", "Target"], [1, 2])

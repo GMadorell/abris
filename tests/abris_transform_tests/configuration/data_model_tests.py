@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from tests.data_model_wrapper import DataModelWrapper
+from tests.wrappers.data_model_wrapper import DataModelWrapper
 
 
 class DataModelTest(TestCase):
