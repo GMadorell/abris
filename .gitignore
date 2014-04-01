@@ -14,3 +14,7 @@ local/*
 # PyPI
 *.pypirc
 .pypirc
+
+# Test results
+cover/
+.coverage
