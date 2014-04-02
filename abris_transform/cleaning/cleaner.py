@@ -37,7 +37,7 @@ class Cleaner(object):
                 dataframe[numerical_features_names] = dataframe[numerical_features_names].fillna(dataframe.mean())
                 dataframe = dataframe.fillna(dataframe.mode())
             elif method == "median":
-                dataframe[numerical_features_names] = dataframe[numerical_features_names].fillna(dataframe.mean())
+                dataframe[numerical_features_names] = dataframe[numerical_features_names].fillna(dataframe.median())
                 dataframe = dataframe.fillna(dataframe.mode())
             elif method == "mode":
                 dataframe = dataframe.fillna(dataframe.mode())

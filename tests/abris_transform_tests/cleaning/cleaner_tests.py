@@ -63,7 +63,7 @@ class CleanerTest(unittest.TestCase):
 
     def test_missing_values_median(self):
         dm_wrapper = DataModelWrapper() \
-            .add_numerical_feature([1.0, 2.0, 3.0, np.nan]) \
+            .add_numerical_feature([1.0, 2.0, 4.0, np.nan]) \
             .add_categorical_target([2.0, np.nan, 2.0, 5.0])
 
         config_wrapper = ConfigWrapper() \
@@ -74,7 +74,7 @@ class CleanerTest(unittest.TestCase):
 
         df = cleaner.prepare(dm_wrapper.dataframe)
 
-        assert_series_equal(df.numerical_feature0, pd.Series([1.0, 2.0, 3.0, 2.0]))
+        assert_series_equal(df.numerical_feature0, pd.Series([1.0, 2.0, 4.0, 2.0]))
         assert_series_equal(df.categorical_target1, pd.Series([2.0, 2.0, 2.0, 5.0]))
 
     def test_missing_values_mode(self):
