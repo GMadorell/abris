@@ -24,6 +24,7 @@ class ConfigWrapper(object):
             data_model_dict[name] = characteristics
 
         self.__config_dict["data_model"] = data_model_dict
+        return self
 
     def add_option(self, name, enabled, **kargs):
         """
@@ -38,6 +39,7 @@ class ConfigWrapper(object):
             option_dict[str(key)] = value
 
         self.__config_dict[name] = option_dict
+        return self
 
     def build_to_config(self):
         return Configuration(self.build_to_file_like())

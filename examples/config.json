@@ -7,14 +7,14 @@
         "paid_price": ["Numeric", "Target"]
     },
     "nan_treatment": {
-        "enabled": "True",
+        "enabled": true,
         "method": "mean"
     },
     "scaling": {
-        "enabled": "True"
+        "enabled": true
     },
     "split": {
-        "enabled": "True",
+        "enabled": true,
         "train_percentage": 0.7
     }
 }

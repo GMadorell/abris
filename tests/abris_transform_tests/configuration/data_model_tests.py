@@ -7,7 +7,6 @@ class DataModelTest(TestCase):
     def setUp(self):
         self.dm_wrapper = DataModelWrapper()
 
-
     def test_has_target_without_target(self):
         self.assertFalse(self.dm_wrapper.data_model.has_target())
 
@@ -16,17 +15,17 @@ class DataModelTest(TestCase):
         self.assertTrue(self.dm_wrapper.data_model.has_target())
 
     def test_find_target_feature_with_one_target(self):
-        self.dm_wrapper.add_numerical_target(number=1)
+        self.dm_wrapper.add_numerical_target()
         feature = self.dm_wrapper.data_model.find_target_feature()
-        self.assertEqual(feature.get_name(), "numerical_target1")
+        self.assertEqual(feature.get_name(), "numerical_target0")
 
     def test_find_target_feature_without_target_should_raise(self):
         with self.assertRaises(AssertionError):
             self.dm_wrapper.data_model.find_target_feature()
 
     def test_find_target_feature_with_two_targets_should_raise(self):
-        self.dm_wrapper.add_numerical_target(number=1)
-        self.dm_wrapper.add_numerical_target(number=2)
+        self.dm_wrapper.add_numerical_target()
+        self.dm_wrapper.add_numerical_target()
         with self.assertRaises(AssertionError):
             self.dm_wrapper.data_model.find_target_feature()
 
@@ -38,7 +37,7 @@ class DataModelTest(TestCase):
         self.dm_wrapper.add_categorical_text_feature()
         features = self.dm_wrapper.data_model.find_all_features()
         names = map(lambda feature: feature.get_name(), features)
-        self.assertIn("numerical_feature1", names)
+        self.assertIn("numerical_feature0", names)
         self.assertIn("categorical_text_feature1", names)
 
     def test_has_any_text_feature_without_text_features(self):
@@ -55,7 +54,7 @@ class DataModelTest(TestCase):
         self.dm_wrapper.add_boolean_feature()
         self.dm_wrapper.add_categorical_text_feature()
         self.dm_wrapper.add_numerical_target()
-        self.assert_feature_names(self.dm_wrapper.data_model.find_boolean_features(), "boolean_feature1")
+        self.assert_feature_names(self.dm_wrapper.data_model.find_boolean_features(), "boolean_feature0")
 
     def test_find_text_features_without_any(self):
         self.assertEqual([], self.dm_wrapper.data_model.find_text_features())

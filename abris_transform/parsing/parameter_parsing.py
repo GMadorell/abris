@@ -1,6 +1,6 @@
 import unittest
 
-from abris_transform.parsing import string_aliases
+from abris_transform.parsing import boolean_aliases
 
 
 def parse_parameter(value):
@@ -16,9 +16,9 @@ def parse_parameter(value):
         try:
             return float(value)
         except ValueError:
-            if value in string_aliases.true_boolean_aliases:
+            if value in boolean_aliases.true_boolean_aliases:
                 return True
-            elif value in string_aliases.false_boolean_aliases:
+            elif value in boolean_aliases.false_boolean_aliases:
                 return False
             else:
                 return str(value)

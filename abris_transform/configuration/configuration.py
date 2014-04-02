@@ -3,7 +3,7 @@ import collections
 
 from abris_transform.configuration.data_model import DataModel
 from abris_transform.parsing.parameter_parsing import parse_parameter
-from abris_transform.parsing.string_aliases import true_boolean_aliases
+from abris_transform.parsing.boolean_aliases import true_boolean_aliases
 
 
 class Configuration(object):

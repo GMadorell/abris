@@ -11,11 +11,14 @@ class DataModelWrapper(object):
         self.dataframe = None
         self.data_model = None
 
+        self.__count = 0
+
         self.clean()
 
     def clean(self):
         self.__model_dict = {}
         self.__dataframe_dict = {}
+        self.__count = 0
         self.rebuild()
 
     def rebuild(self):
@@ -23,35 +26,47 @@ class DataModelWrapper(object):
         self.data_model = DataModel(self.__model_dict)
         self.data_model.set_features_types_from_dataframe(self.dataframe)
 
-    def add_numerical_feature(self, number=1):
-        self.__add(number, "numerical_feature", ["Numerical"], [1, 2])
+    def add_numerical_feature(self, values=None):
+        if not values: values = [1, 2, 3, 4]
+        self.__add("numerical_feature", ["Numerical"], values)
+        return self
 
-    def add_boolean_feature(self, number=1):
-        self.__add(number, "boolean_feature", ["Boolean"], [True, False])
+    def add_boolean_feature(self, values=None):
+        if not values: values = [True, False, False, True]
+        self.__add("boolean_feature", ["Boolean"], values)
+        return self
 
-    def add_ignored_numerical_feature(self, number=1):
-        self.__add(number, "ignored_numerical_feature", ["Numerical", "Ignore"], [1, 2])
+    def add_ignored_numerical_feature(self, values=None):
+        if not values: values = [1, 2, 3, 4]
+        self.__add("ignored_numerical_feature", ["Numerical", "Ignore"], values)
+        return self
 
-    def add_categorical_numerical_feature(self, number=1):
-        self.__add(number, "categorical_numerical_feature", ["Categorical"], [1, 2])
+    def add_categorical_numerical_feature(self, values=None):
+        if not values: values = [1, 2, 3, 4]
+        self.__add("categorical_numerical_feature", ["Categorical"], values)
+        return self
 
-    def add_categorical_text_feature(self, number=1):
-        self.__add(number, "categorical_text_feature", ["Categorical"], ["Hi", "Hello"])
+    def add_categorical_text_feature(self, values=None):
+        if not values: values = ["Hi", "Hello", "Hola", "Salute"]
+        self.__add("categorical_text_feature", ["Categorical"], values)
+        return self
 
-    def add_custom_text_feature(self, values, number=1):
-        self.__add(number, "custom_text_feature", ["Categorical"], values)
+    def add_numerical_target(self, values=None):
+        if not values: values = [1, 2, 3, 4]
+        self.__add("numerical_target", ["Numerical", "Target"], values)
+        return self
 
-    def add_numerical_target(self, number=1):
-        self.__add(number, "numerical_target", ["Numerical", "Target"], [1, 2])
+    def add_categorical_target(self, values=None):
+        if not values: values = [1, 2, 2, 4]
+        self.__add("categorical_target", ["Categorical", "Target"], values)
+        return self
 
-    def add_categorical_target(self, number=1):
-        self.__add(number, "categorical_target", ["Categorical", "Target"], [1, 2])
-
-    def __add(self, number, name, caracteristics, values):
+    def __add(self, name, caracteristics, values):
         self.__model_dict.update({
-            name + str(number): caracteristics
+            name + str(self.__count): caracteristics
         })
         self.__dataframe_dict.update({
-            name + str(number): pd.Series(values)
+            name + str(self.__count): pd.Series(values)
         })
+        self.__count += 1
         self.rebuild()

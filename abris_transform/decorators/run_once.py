@@ -28,14 +28,3 @@ def func_once(func):
 
     return decorated
 
-
-# class RunOnce(object):
-#     def __init__(self, func):
-#         self.__func = func
-#         self.__called = False
-#
-#     def __call__(self, *args, **kwargs):
-#         if not self.__called:
-#             self.__called = True
-#             return self.__func(*args, **kwargs)
-
