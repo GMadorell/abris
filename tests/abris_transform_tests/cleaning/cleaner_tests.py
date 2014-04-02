@@ -148,6 +148,8 @@ class CleanerTest(unittest.TestCase):
         ignored_name_1 = "ignored_numerical_feature0"
         ignored_name_2 = "ignored_numerical_feature3"
 
+        # Make sure we call the proper features and that they exist before
+        # we even try to drop them. Self-safety, basically.
         dm_wrapper.dataframe[ignored_name_1]
         dm_wrapper.dataframe[ignored_name_2]
 

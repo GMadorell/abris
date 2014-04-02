@@ -90,7 +90,8 @@ class DataModelTest(TestCase):
         self.dm_wrapper.add_numerical_feature()
         self.dm_wrapper.add_numerical_feature()
 
-        self.assert_feature_names(self.dm_wrapper.data_model.find_numerical_features(), "numerical_feature3", "numerical_feature4")
+        self.assert_feature_names(self.dm_wrapper.data_model.find_numerical_features(),
+                                  "numerical_feature3", "numerical_feature4")
 
     def assert_feature_names(self, list_features, *names):
         """
@@ -99,6 +100,7 @@ class DataModelTest(TestCase):
         """
         assert len(list_features) == len(names)
         for i, feature in enumerate(list_features):
-            self.assertEqual(feature.get_name(), names[i])
+            matching = filter(lambda name: name == feature.get_name(), names)
+            assert len(matching) == 1
 
 
