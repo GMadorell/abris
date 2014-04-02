@@ -31,11 +31,13 @@ class Cleaner(object):
     def __apply_nan_treatment(self, dataframe):
         if self.__config.is_option_enabled("nan_treatment"):
             method = self.__config.get_option_parameter("nan_treatment", "method")
+            numerical_features_names = self.__extract_feature_names(
+                self.__config.get_data_model().find_numerical_features())
             if method == "mean":
-                dataframe = dataframe.fillna(dataframe.mean())
+                dataframe[numerical_features_names] = dataframe[numerical_features_names].fillna(dataframe.mean())
                 dataframe = dataframe.fillna(dataframe.mode())
             elif method == "median":
-                dataframe = dataframe.fillna(dataframe.median())
+                dataframe[numerical_features_names] = dataframe[numerical_features_names].fillna(dataframe.mean())
                 dataframe = dataframe.fillna(dataframe.mode())
             elif method == "mode":
                 dataframe = dataframe.fillna(dataframe.mode())

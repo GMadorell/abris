@@ -22,12 +22,7 @@ def get_dummy_variables_mapping(config):
 def get_normalize_variables_mapping(config):
     model = config.get_data_model()
     mapping = []
-    features_to_normalize = set(model.find_all_features()) \
-                            - set(model.find_boolean_features()) \
-                            - set(model.find_categorical_features()) \
-                            - set(model.find_ignored_features())
-    if model.has_target():
-        features_to_normalize -= {model.find_target_feature()}
+    features_to_normalize = model.find_numerical_features(include_target=False)
 
     if config.is_option_enabled("scaling"):
         transform_class = StandardScaler

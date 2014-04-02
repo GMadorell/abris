@@ -30,6 +30,20 @@ class DataModel(object):
     def find_all_features(self):
         return [feature for feature in self.__iter__()]
 
+    def find_numerical_features(self, include_target=False):
+        """
+        More formally, returns a set of those features that aren't boolean,
+        categorical nor ignored (optionally [defaults to ignoring it]
+        including the target feature).
+        """
+        numerical_features = set(self.find_all_features()) \
+                             - set(self.find_boolean_features()) \
+                             - set(self.find_categorical_features()) \
+                             - set(self.find_ignored_features())
+        if not include_target and self.has_target():
+            numerical_features -= {self.find_target_feature()}
+        return numerical_features
+
     def find_boolean_features(self):
         return self.__find_features_matching(lambda feature: feature.is_type_name("boolean"))
 

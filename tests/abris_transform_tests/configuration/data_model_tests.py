@@ -83,7 +83,20 @@ class DataModelTest(TestCase):
         self.dm_wrapper.add_numerical_target()
         self.assert_feature_names(self.dm_wrapper.data_model.find_ignored_features(), "ignored_numerical_feature1")
 
+    def test_find_numerical_features(self):
+        self.dm_wrapper.add_boolean_feature()
+        self.dm_wrapper.add_ignored_numerical_feature()
+        self.dm_wrapper.add_numerical_target()
+        self.dm_wrapper.add_numerical_feature()
+        self.dm_wrapper.add_numerical_feature()
+
+        self.assert_feature_names(self.dm_wrapper.data_model.find_numerical_features(), "numerical_feature3", "numerical_feature4")
+
     def assert_feature_names(self, list_features, *names):
+        """
+        Asserts that the given list of features has the given names, in the
+        exact order as they are given.
+        """
         assert len(list_features) == len(names)
         for i, feature in enumerate(list_features):
             self.assertEqual(feature.get_name(), names[i])
