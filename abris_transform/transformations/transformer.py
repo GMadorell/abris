@@ -1,6 +1,6 @@
 import numpy as np
 
-from abris_transform.dataframe_manipulation.split_dataframe import split_dataframe_train_test
+from abris_transform.dataframe_manipulation.dataframe_split import split_dataframe_train_test
 from abris_transform.transformations.label_encoder_missing_values_transformer import \
     LabelEncoderMissingValuesTransformer
 from abris_transform.transformations.mapping import DataFrameMapCreator

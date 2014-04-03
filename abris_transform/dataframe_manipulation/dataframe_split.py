@@ -20,16 +20,18 @@ def split_dataframe(df, train_percentage=0.6, cv_percentage=0.2, test_percentage
     @param cv_percentage:    float | percentage of data for cross validation set (default=0.2)
     @param test_percentage:  float | percentage of data for test set (default=0.2)
     """
-    assert train_percentage + cv_percentage + test_percentage == 1.0
+    sum_percentages = sum((train_percentage, cv_percentage, test_percentage))
+    assert abs(sum_percentages - 1) < 0.001, \
+        "Sum of training, cv and test_percentage should be 1. Was %f" % sum_percentages
 
     N = len(df)
     l = range(N)
     shuffle(l)
 
     # get splitting indices
-    train_len = int(N * train_percentage)
-    cv_len = int(N * cv_percentage)
-    test_len = int(N * test_percentage)
+    train_len = int(round(N * train_percentage))
+    cv_len = int(round(N * cv_percentage))
+    test_len = int(round(N * test_percentage))
 
     # get training, cv, and test sets
     training = df.ix[l[:train_len]]

@@ -12,5 +12,5 @@ setup(
     url = 'https://github.com/Skabed/abris',
     download_url = 'https://github.com/Skabed/abris/tarball/0.1.3',
     keywords = ['preprocessing', 'data'],
-    classifiers = [],
+    classifiers = [], requires=['pandas'],
 )
